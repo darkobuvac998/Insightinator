@@ -24,6 +24,8 @@ public class MonitoringMiddleware : IMiddleware
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         _stopwatch = Stopwatch.StartNew();
+        using var scope = _serviceProvider.CreateScope();
+        var monitoringService = scope.ServiceProvider.GetRequiredService<IMonitoringService>();
 
         try
         {
@@ -31,22 +33,25 @@ public class MonitoringMiddleware : IMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError("Exception @{ex}", ex);
+            _logger.LogError("Exception {@Ex}", ex);
+            await monitoringService.ComputeErrroRate(UpTimeSeconds);
+            await monitoringService.ComputeErrorTypes(ex);
         }
         finally
         {
             _stopwatch.Stop();
-            using var scope = _serviceProvider.CreateScope();
-            var monitoringService = scope.ServiceProvider.GetRequiredService<IMonitoringService>();
 
+            // HTTP request
             await monitoringService.ComputeTotalRequestNumber();
             await monitoringService.ComputeAvgRequestProcessingTime(_stopwatch.ElapsedMilliseconds);
             await monitoringService.ComputeRequestsPerMinute(UpTimeSeconds);
+
+            //HTTP response
             await monitoringService.ComputeResponseCodeDistribution(
                 context.Response.StatusCode.ToString()
             );
-
-            scope!.Dispose();
         }
+
+        scope!.Dispose();
     }
 }

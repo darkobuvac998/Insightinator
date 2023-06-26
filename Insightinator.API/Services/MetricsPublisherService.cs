@@ -1,4 +1,5 @@
 ﻿using Insightinator.API.Abstractions;
+using Insightinator.API.Metrics.Error;
 using Insightinator.API.Metrics.Http.Request;
 using Insightinator.API.Metrics.Http.Response;
 
@@ -35,10 +36,16 @@ public class MetricsPublisherService : IMetricsPublisherService
             ResponseCodeDistributionMetric.Id
         );
 
+        var errorRate = await _storeService.GetAsync<ErrroRateMetric>(ErrroRateMetric.Id);
+
+        var errorType = await _storeService.GetAsync<ErrorTypesMetric>(ErrorTypesMetric.Id);
+
         metrics.Add(avgRequestProcessingTimeMetric);
         metrics.Add(totalRequestNumberMetric);
         metrics.Add(requestsPerMinuteMetric);
         metrics.Add(responseCodeDistribution);
+        metrics.Add(errorRate);
+        metrics.Add(errorType);
 
         _logger.LogInformation("Metrics: {@Metrics}", metrics);
 

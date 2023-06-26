@@ -6,4 +6,6 @@ public interface IMonitoringService
     Task ComputeAvgRequestProcessingTime(double time);
     Task ComputeRequestsPerMinute(double upTime);
     Task ComputeResponseCodeDistribution(string httpCode);
+    Task ComputeErrroRate(double upTime);
+    Task ComputeErrorTypes(object error);
 }
