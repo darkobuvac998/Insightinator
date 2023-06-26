@@ -4,6 +4,8 @@ namespace Insightinator.API.Metrics.Http.Request;
 
 public class RequestsPerMinuteMetric : IMetric<double>
 {
+    public static string Id => "RequestsPerMinuteMetric";
+
     public double Value { get; set; }
     public string Name { get; set; }
     public string Unit { get; set; }

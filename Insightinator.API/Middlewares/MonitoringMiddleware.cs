@@ -9,6 +9,9 @@ public class MonitoringMiddleware : IMiddleware
     private readonly IServiceProvider _serviceProvider;
     private Stopwatch _stopwatch;
 
+    private static double UpTimeSeconds =>
+        (DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()).TotalSeconds;
+
     public MonitoringMiddleware(
         ILogger<MonitoringMiddleware> logger,
         IServiceProvider serviceProvider
@@ -38,6 +41,7 @@ public class MonitoringMiddleware : IMiddleware
 
             await monitoringService.ComputeTotalRequestNumber();
             await monitoringService.ComputeAvgRequestProcessingTime(_stopwatch.ElapsedMilliseconds);
+            await monitoringService.ComputeRequestsPerMinute(UpTimeSeconds);
 
             scope!.Dispose();
         }

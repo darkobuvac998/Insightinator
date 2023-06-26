@@ -4,4 +4,5 @@ public interface IMonitoringService
 {
     Task ComputeTotalRequestNumber();
     Task ComputeAvgRequestProcessingTime(double time);
+    Task ComputeRequestsPerMinute(double upTime);
 }

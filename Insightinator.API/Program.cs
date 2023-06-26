@@ -1,4 +1,5 @@
 using Insightinator.API.Extensions;
+using Insightinator.API.Hubs;
 using Insightinator.API.Middlewares;
 using Serilog;
 
@@ -29,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapHub<MetricsHub>("/metrics-hub");
 
 app.UseMiddleware<MonitoringMiddleware>();
 

@@ -15,6 +15,11 @@ public class MonitoringService : IMonitoringService
         await _sender.Send(new AvgRequestProcessingTimeRequest(time));
     }
 
+    public async Task ComputeRequestsPerMinute(double upTime)
+    {
+        await _sender.Send(new RequestsPerMinuteRequest(upTime));
+    }
+
     public async Task ComputeTotalRequestNumber()
     {
         await _sender.Send(new TotalRequestNumberRequest());

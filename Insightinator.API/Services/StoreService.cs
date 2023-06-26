@@ -9,7 +9,7 @@ public class StoreService : IStoreService
     private readonly IDatabase _database;
     private readonly ILogger<StoreService> _logger;
     private readonly JsonSerializerSettings _serializerSettings;
-    private static SemaphoreSlim _semaphore = new(1, 1);
+    private static readonly SemaphoreSlim _semaphore = new(1, 1);
 
     public StoreService(IConnectionMultiplexer redis, ILogger<StoreService> logger)
     {
@@ -34,9 +34,7 @@ public class StoreService : IStoreService
             return default;
         }
 
-        var keys = (string[])await _database.ExecuteAsync("KEYS", "*");
-
-        _logger.LogInformation(
+        _logger.LogDebug(
             "Fetching metric of type {@Type} from chache by key {@Key}. Data: {@Data}",
             typeof(T),
             key,
@@ -48,7 +46,7 @@ public class StoreService : IStoreService
 
     public async Task SaveAsync<T>(string key, T value)
     {
-        _logger.LogInformation(
+        _logger.LogDebug(
             "Saving object of type {@Type} into db with value {@Data}",
             typeof(T),
             value
