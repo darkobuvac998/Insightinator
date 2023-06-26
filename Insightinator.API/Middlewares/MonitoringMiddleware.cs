@@ -36,6 +36,7 @@ public class MonitoringMiddleware : IMiddleware
             _logger.LogError("Exception {@Ex}", ex);
             await monitoringService.ComputeErrroRate(UpTimeSeconds);
             await monitoringService.ComputeErrorTypes(ex);
+            throw;
         }
         finally
         {

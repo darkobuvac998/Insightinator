@@ -19,6 +19,7 @@ public static class DependencyInjection
         );
 
         services.AddSingleton<MonitoringMiddleware>();
+        services.AddSingleton<ErrorHandlingMiddleware>();
 
         services.AddScoped<IStoreService, StoreService>();
         services.AddScoped<IConnectionMultiplexer>(

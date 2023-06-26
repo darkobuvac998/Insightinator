@@ -31,11 +31,20 @@ public class PubliserBackgroundService : BackgroundService
                 IOptions<PublishingOptions>
             >();
 
-            await Task.Delay(publishingOptions.Value.PublishTime, stoppingToken);
-            var metrics = await metricsPublisher.PublishMetrics();
+            var storeService = scope.ServiceProvider.GetRequiredService<IStoreService>();
 
-            await hubContext.Clients.All.ReceiveMetrics(JsonConvert.SerializeObject(metrics));
+            var metricHubKey = $"{Constants.HubConnections}-Metrics";
+            var connections = await storeService.GetAsync<IList<string>>(metricHubKey);
+
+            if (connections is not null && connections.Any())
+            {
+                var metrics = await metricsPublisher.PublishMetrics();
+
+                await hubContext.Clients.All.ReceiveMetrics(JsonConvert.SerializeObject(metrics));
+            }
             scope!.Dispose();
+
+            await Task.Delay(publishingOptions.Value.PublishTime, stoppingToken);
         }
     }
 }

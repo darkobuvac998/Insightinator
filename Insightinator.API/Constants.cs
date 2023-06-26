@@ -3,6 +3,7 @@
 public static class Constants
 {
     public static readonly string UpTime = "UpTime";
+    public static readonly string HubConnections = "Connections";
 
     public static class ErrorsConstants
     {

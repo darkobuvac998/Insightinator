@@ -33,6 +33,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapHub<MetricsHub>("/metrics-hub");
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseMiddleware<MonitoringMiddleware>();
 
 app.UseHttpsRedirection();

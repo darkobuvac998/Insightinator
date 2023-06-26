@@ -23,7 +23,7 @@ public class RedisCleanupService : IHostedService
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        await Task.Delay(1000, cancellationToken);
+        await Task.Delay(200, cancellationToken);
         await ClearRedisDb();
     }
 
