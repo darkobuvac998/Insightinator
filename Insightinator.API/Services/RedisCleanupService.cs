@@ -40,5 +40,7 @@ public class RedisCleanupService : IHostedService
         {
             await database.KeyDeleteAsync(key);
         }
+
+        scope!.Dispose();
     }
 }

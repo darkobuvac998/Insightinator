@@ -5,6 +5,10 @@ namespace Insightinator.API.Middlewares;
 
 public class ErrorHandlingMiddleware : IMiddleware
 {
+    private readonly ILogger<ErrorHandlingMiddleware> _logger;
+
+    public ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) => _logger = logger;
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
@@ -19,6 +23,8 @@ public class ErrorHandlingMiddleware : IMiddleware
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
+        _logger.LogError("An error occured during the request. Error: {@err}", exception);
+
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         context.Response.ContentType = "application/json";
 
@@ -35,6 +41,12 @@ public class ErrorHandlingMiddleware : IMiddleware
                 Formatting = Formatting.Indented,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             }
+        );
+
+        _logger.LogError(
+            "An error occured during the request. Error: {@err} Exception: {@ex}",
+            json,
+            exception
         );
 
         await context.Response.WriteAsync(json);
