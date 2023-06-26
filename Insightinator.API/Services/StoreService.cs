@@ -9,6 +9,7 @@ public class StoreService : IStoreService
     private readonly IDatabase _database;
     private readonly ILogger<StoreService> _logger;
     private readonly JsonSerializerSettings _serializerSettings;
+    private static SemaphoreSlim _semaphore = new(1, 1);
 
     public StoreService(IConnectionMultiplexer redis, ILogger<StoreService> logger)
     {
@@ -24,7 +25,9 @@ public class StoreService : IStoreService
 
     public async Task<T?> GetAsync<T>(string key)
     {
+        await _semaphore.WaitAsync();
         var result = await _database.StringGetAsync(key);
+        _semaphore.Release();
 
         if (result.IsNullOrEmpty)
         {
@@ -51,9 +54,12 @@ public class StoreService : IStoreService
             value
         );
 
+        await _semaphore.WaitAsync();
         await _database.StringSetAsync(
             key,
             JsonConvert.SerializeObject(value, _serializerSettings)
         );
+
+        _semaphore.Release();
     }
 }

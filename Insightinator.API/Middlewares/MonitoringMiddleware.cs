@@ -1,5 +1,4 @@
-﻿using Insightinator.API.Handlers.Http.Request;
-using MediatR;
+﻿using Insightinator.API.Abstractions;
 using System.Diagnostics;
 
 namespace Insightinator.API.Middlewares;
@@ -35,9 +34,12 @@ public class MonitoringMiddleware : IMiddleware
         {
             _stopwatch.Stop();
             using var scope = _serviceProvider.CreateScope();
-            var mediatr = scope.ServiceProvider.GetRequiredService<IMediator>();
+            var monitoringService = scope.ServiceProvider.GetRequiredService<IMonitoringService>();
 
-            await mediatr.Send(new TotalRequestNumberRequest());
+            await monitoringService.ComputeTotalRequestNumber();
+            await monitoringService.ComputeAvgRequestProcessingTime(_stopwatch.ElapsedMilliseconds);
+
+            scope!.Dispose();
         }
     }
 }

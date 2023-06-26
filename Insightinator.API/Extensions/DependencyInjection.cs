@@ -23,6 +23,8 @@ public static class DependencyInjection
             opt => ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis"))
         );
 
+        services.AddScoped<IMonitoringService, MonitoringService>();
+
         return services;
     }
 
