@@ -2,21 +2,21 @@
 
 namespace Insightinator.API.Metrics.Http.Request;
 
-public class AvgRequestProcessingTime : IMetric<double>
+public class RequestsPerMinuteMetric : IMetric<double>
 {
     public double Value { get; set; }
     public string Name { get; set; }
     public string Unit { get; set; }
     public string Description { get; set; }
 
-    public IMetric<double> Initialize()
+    public static RequestsPerMinuteMetric Build()
     {
-        return new AvgRequestProcessingTime
+        return new RequestsPerMinuteMetric
         {
             Value = 0,
-            Name = "Average http request processing time",
-            Unit = "ms",
-            Description = "Shows average time for processing http request"
+            Name = "Avg number of HTTP request per minute",
+            Description = "Shows average HTTP reqeust per munite",
+            Unit = "Request Count"
         };
     }
 }
