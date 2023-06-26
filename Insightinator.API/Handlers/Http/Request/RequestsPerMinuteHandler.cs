@@ -31,17 +31,15 @@ public sealed class RequestsPerMinuteHandler
         {
             metric.Value =
                 (elapsedMinutes > 0 ? totalRequestNumber?.Value / elapsedMinutes : 0) ?? 0;
-
-            await _storeService.SaveAsync(RequestsPerMinuteMetric.Id, metric);
         }
         else
         {
             metric = RequestsPerMinuteMetric.Build();
             metric.Value =
                 (elapsedMinutes > 0 ? totalRequestNumber?.Value / elapsedMinutes : 0) ?? 0;
-
-            await _storeService.SaveAsync(RequestsPerMinuteMetric.Id, metric);
         }
+
+        await _storeService.SaveAsync(RequestsPerMinuteMetric.Id, metric);
 
         return new MetricResponse<double> { Value = metric.Value, Metric = metric };
     }

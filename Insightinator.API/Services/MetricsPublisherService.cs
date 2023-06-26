@@ -1,5 +1,6 @@
 ﻿using Insightinator.API.Abstractions;
 using Insightinator.API.Metrics.Http.Request;
+using Insightinator.API.Metrics.Http.Response;
 
 namespace Insightinator.API.Services;
 
@@ -30,9 +31,14 @@ public class MetricsPublisherService : IMetricsPublisherService
             RequestsPerMinuteMetric.Id
         );
 
+        var responseCodeDistribution = await _storeService.GetAsync<ResponseCodeDistributionMetric>(
+            ResponseCodeDistributionMetric.Id
+        );
+
         metrics.Add(avgRequestProcessingTimeMetric);
         metrics.Add(totalRequestNumberMetric);
         metrics.Add(requestsPerMinuteMetric);
+        metrics.Add(responseCodeDistribution);
 
         _logger.LogInformation("Metrics: {@Metrics}", metrics);
 

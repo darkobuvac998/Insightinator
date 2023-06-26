@@ -29,14 +29,14 @@ public class TotalRequestNumberHandler
         if (metric != null)
         {
             metric.Value++;
-            await _storeService.SaveAsync(TotalRequestNumberMetric.Id, metric);
         }
         else
         {
             metric = TotalRequestNumberMetric.Build();
             metric.Value++;
-            await _storeService.SaveAsync(TotalRequestNumberMetric.Id, metric);
         }
+
+        await _storeService.SaveAsync(TotalRequestNumberMetric.Id, metric);
 
         return new MetricResponse<long> { Value = metric.Value, Metric = metric };
     }

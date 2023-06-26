@@ -42,6 +42,9 @@ public class MonitoringMiddleware : IMiddleware
             await monitoringService.ComputeTotalRequestNumber();
             await monitoringService.ComputeAvgRequestProcessingTime(_stopwatch.ElapsedMilliseconds);
             await monitoringService.ComputeRequestsPerMinute(UpTimeSeconds);
+            await monitoringService.ComputeResponseCodeDistribution(
+                context.Response.StatusCode.ToString()
+            );
 
             scope!.Dispose();
         }

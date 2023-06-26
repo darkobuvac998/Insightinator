@@ -35,14 +35,14 @@ public sealed class AvgRequestProcessingTimeHandler
         if (metric != null)
         {
             metric.Value = AvgRequestProcessingTime;
-            await _storeService.SaveAsync(AvgRequestProcessingTimeMetric.Id, metric);
         }
         else
         {
             metric = AvgRequestProcessingTimeMetric.Build();
             metric.Value = AvgRequestProcessingTime;
-            await _storeService.SaveAsync(AvgRequestProcessingTimeMetric.Id, metric);
         }
+
+        await _storeService.SaveAsync(AvgRequestProcessingTimeMetric.Id, metric);
 
         return new MetricResponse<double> { Value = metric.Value, Metric = metric };
     }
