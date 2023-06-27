@@ -23,7 +23,7 @@ public class TotalRequestNumberHandler
     )
     {
         var metric = await _storeService.GetAsync<TotalRequestNumberMetric>(
-            TotalRequestNumberMetric.Id
+            nameof(TotalRequestNumberMetric)
         );
 
         if (metric != null)
@@ -36,7 +36,7 @@ public class TotalRequestNumberHandler
             metric.Value++;
         }
 
-        await _storeService.SaveAsync(TotalRequestNumberMetric.Id, metric);
+        await _storeService.SaveAsync(nameof(TotalRequestNumberMetric), metric);
 
         return new MetricResponse<long> { Value = metric.Value, Metric = metric };
     }

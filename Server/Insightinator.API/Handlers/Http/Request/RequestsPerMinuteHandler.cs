@@ -1,4 +1,5 @@
 ﻿using Insightinator.API.Abstractions;
+using Insightinator.API.Extensions;
 using Insightinator.API.Metrics;
 using Insightinator.API.Metrics.Http.Request;
 using MediatR;
@@ -29,14 +30,16 @@ public sealed class RequestsPerMinuteHandler
 
         if (metric is not null)
         {
-            metric.Value =
-                (elapsedMinutes > 0 ? totalRequestNumber?.Value / elapsedMinutes : 0) ?? 0;
+            metric.Value = (
+                (elapsedMinutes > 0 ? totalRequestNumber?.Value / elapsedMinutes : 0) ?? 0
+            ).Round(2);
         }
         else
         {
             metric = RequestsPerMinuteMetric.Build();
-            metric.Value =
-                (elapsedMinutes > 0 ? totalRequestNumber?.Value / elapsedMinutes : 0) ?? 0;
+            metric.Value = (
+                (elapsedMinutes > 0 ? totalRequestNumber?.Value / elapsedMinutes : 0) ?? 0
+            ).Round(2);
         }
 
         await _storeService.SaveAsync(RequestsPerMinuteMetric.Id, metric);

@@ -1,4 +1,5 @@
 ﻿using Insightinator.API.Abstractions;
+using Insightinator.API.Extensions;
 using Insightinator.API.Metrics;
 using Insightinator.API.Metrics.Error;
 using MediatR;
@@ -41,7 +42,7 @@ public class ErrroRateHandler
                 metric.Value.AddOrUpdate(
                     Constants.ErrorsConstants.ErrorRate,
                     0,
-                    (key, value) => newRate
+                    (key, value) => newRate.Round(2)
                 );
             }
 
@@ -60,10 +61,11 @@ public class ErrroRateHandler
                 (key, value) => upTimeMinutes
             );
             metric.Value[Constants.ErrorsConstants.ErrorCount] = 1;
-            metric.Value[Constants.ErrorsConstants.ErrorRate] =
+            metric.Value[Constants.ErrorsConstants.ErrorRate] = (
                 upTimeMinutes > 0
                     ? metric.Value[Constants.ErrorsConstants.ErrorCount] / upTimeMinutes
-                    : 0;
+                    : 0
+            ).Round(2);
         }
 
         await _storeService.SaveAsync(ErrroRateMetric.Id, metric);

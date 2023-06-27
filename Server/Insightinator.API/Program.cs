@@ -31,14 +31,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapHub<MetricsHub>("/metrics-hub");
-
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseMiddleware<MonitoringMiddleware>();
+
+app.MapHub<MetricsHub>("hubs/metrics");
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 

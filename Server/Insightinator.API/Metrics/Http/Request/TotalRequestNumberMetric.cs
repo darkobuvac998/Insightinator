@@ -5,7 +5,6 @@ namespace Insightinator.API.Metrics.Http.Request;
 public sealed class TotalRequestNumberMetric : IMetric<long>
 {
     public static string Id => "TotalRequestNumberMetric";
-
     public long Value { get; set; }
     public string Name { get; set; }
     public string Unit { get; set; }

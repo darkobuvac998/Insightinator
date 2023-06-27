@@ -29,13 +29,40 @@ public static class DependencyInjection
         services.AddScoped<IMonitoringService, MonitoringService>();
         services.AddScoped<IMetricsPublisherService, MetricsPublisherService>();
 
-        services.AddSignalR(opt =>
-        {
-            opt.EnableDetailedErrors = true;
-            opt.HandshakeTimeout = TimeSpan.FromSeconds(5);
-        });
+        services
+            .AddSignalR(opt =>
+            {
+                opt.EnableDetailedErrors = true;
+                opt.HandshakeTimeout = TimeSpan.FromSeconds(5);
+            })
+            .AddNewtonsoftJsonProtocol(
+                opt =>
+                    opt.PayloadSerializerSettings = new Newtonsoft.Json.JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    }
+            );
 
         services.ConfigureOptions<PublishingOptionsSetup>();
+
+        services.AddRouting(opt => opt.LowercaseUrls = true);
+
+        services.AddCors(
+            opt =>
+                opt.AddPolicy(
+                    "CorsPolicy",
+                    builder =>
+                    {
+                        builder
+                            .WithOrigins("https://localhost:5544")
+                            .AllowAnyHeader()
+                            .WithMethods("GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS")
+                            .AllowCredentials()
+                        //.AllowAnyMethod()
+                        ;
+                    }
+                )
+        );
 
         return services;
     }

@@ -1,4 +1,5 @@
 ﻿using Insightinator.API.Abstractions;
+using Insightinator.API.Extensions;
 using Insightinator.API.Hubs;
 using Insightinator.API.Options;
 using Microsoft.AspNetCore.SignalR;
@@ -40,7 +41,12 @@ public class PubliserBackgroundService : BackgroundService
             {
                 var metrics = await metricsPublisher.PublishMetrics();
 
-                await hubContext.Clients.All.ReceiveMetrics(JsonConvert.SerializeObject(metrics));
+                await hubContext.Clients.All.ReceiveMetrics(
+                    JsonConvert.SerializeObject(
+                        metrics,
+                        new JsonSerializerSettings().DefaultSettings()
+                    )
+                );
             }
             scope!.Dispose();
 

@@ -1,4 +1,5 @@
 ﻿using Insightinator.API.Abstractions;
+using Insightinator.API.Extensions;
 using Insightinator.API.Metrics;
 using Insightinator.API.Metrics.Http.Request;
 using MediatR;
@@ -16,7 +17,7 @@ public sealed class AvgRequestProcessingTimeHandler
     private static ConcurrentBag<double> _processingTime = new();
 
     private static double AvgRequestProcessingTime =>
-        !_processingTime.IsEmpty ? _processingTime.Sum() / _processingTime.Count : 0;
+        (!_processingTime.IsEmpty ? _processingTime.Sum() / _processingTime.Count : 0).Round(2);
 
     public AvgRequestProcessingTimeHandler(IStoreService storeService) =>
         (_storeService) = (storeService);
