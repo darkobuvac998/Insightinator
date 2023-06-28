@@ -16,8 +16,9 @@ registerToastImplementation({
                <div>{err}</div>
             </cx>
          ),
-         timeout: 5000,
+         timeout: 2500,
          mod: 'error',
+         placement: 'top-right',
       }).open();
    },
    showInfoToast: (content) => {
@@ -27,8 +28,9 @@ registerToastImplementation({
                <div class="text-sm">{content}</div>
             </cx>
          ),
-         timeout: 5000,
+         timeout: 2500,
          mod: 'dark',
+         placement: 'top-right',
       }).open();
    },
 });

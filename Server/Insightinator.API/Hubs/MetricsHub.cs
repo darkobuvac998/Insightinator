@@ -51,7 +51,7 @@ public sealed class MetricsHub : Hub<IMetricsHubClient>
 
     public async Task PublishMetrics()
     {
-        var metrics = await _metricsPublisherService.PublishMetrics();
+        var metrics = await _metricsPublisherService.PublishErrorMetrics();
         await Clients.All.ReceiveMetrics(JsonConvert.SerializeObject(metrics));
     }
 }

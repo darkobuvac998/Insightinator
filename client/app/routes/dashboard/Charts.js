@@ -1,8 +1,8 @@
-import { Svg } from 'cx/svg';
 import { CategoryAxis, Chart, Gridlines, Legend, LineGraph, Marker, NumericAxis } from 'cx/charts';
+import { Svg } from 'cx/svg';
+import { tpl } from 'cx/ui';
 import { Repeater } from 'cx/widgets';
 import '../../util/kformat';
-import { bind, tpl } from 'cx/ui';
 
 export const Charts = ({}) => (
    <cx>
@@ -53,7 +53,7 @@ export const Charts = ({}) => (
                   active-bind="$page.charts.cash"
                   legend={false}
                />
-               <Repeater records-bind="$page.chart">
+               {/* <Repeater records-bind="$page.chart">
                   <Marker
                      name="Sales"
                      x-bind="$record.month"
@@ -100,7 +100,7 @@ export const Charts = ({}) => (
                         text: tpl('{$record.balance:n;0} EUR'),
                      }}
                   />
-               </Repeater>
+               </Repeater> */}
             </Chart>
          </Svg>
       </div>

@@ -19,4 +19,11 @@ public class TestController : ControllerBase
         await Task.Delay(500);
         throw new Exception("Error occured.....");
     }
+
+    [HttpGet("bad-reqeust")]
+    public async Task<IActionResult> BadRequestAsync()
+    {
+        await Task.Delay(500);
+        return BadRequest("Error");
+    }
 }

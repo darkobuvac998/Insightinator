@@ -1,6 +1,12 @@
-﻿namespace Insightinator.API.Abstractions;
+﻿using Insightinator.API.Metrics;
+using Insightinator.API.Metrics.Http.Response;
+
+namespace Insightinator.API.Abstractions;
 
 public interface IMetricsPublisherService
 {
-    Task<IList<object>> PublishMetrics();
+    Task<MetricsGroup> PublishErrorMetrics();
+    Task<MetricsGroup> PublishHttpRequestMetrics();
+    Task<IList<MetricsGroup>> PublishMetricGroups();
+    Task<MetricsGroup> PublishHttpResponseMetrics();
 }

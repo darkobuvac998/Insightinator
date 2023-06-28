@@ -39,7 +39,7 @@ public class PubliserBackgroundService : BackgroundService
 
             if (connections is not null && connections.Any())
             {
-                var metrics = await metricsPublisher.PublishMetrics();
+                var metrics = await metricsPublisher.PublishMetricGroups();
 
                 await hubContext.Clients.All.ReceiveMetrics(
                     JsonConvert.SerializeObject(

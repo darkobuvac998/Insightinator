@@ -8,4 +8,5 @@ public interface IMonitoringService
     Task ComputeResponseCodeDistribution(string httpCode);
     Task ComputeErrroRate(double upTime);
     Task ComputeErrorTypes(object error);
+    Task ComputeErrorCount();
 }

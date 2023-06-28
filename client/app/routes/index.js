@@ -9,6 +9,9 @@ import SignIn from './pages/sign-in';
 import { SandboxedRoute } from '../components/SandboxedRoute';
 import InvoiceRoutes from './invoices';
 import { PageNotImplemented } from '../components/PageNotImplemented';
+import { enableTooltips } from 'cx/widgets';
+
+enableTooltips();
 
 export default () => (
    <cx>

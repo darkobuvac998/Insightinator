@@ -76,8 +76,8 @@ export const CheckerLayout = ({ children, nav }) => (
          <div class="border-r border-b py-2 pl-6 flex">
             <Logo2 />
          </div>
-         <div class="border-b flex">
-            <div class="flex-grow">
+         <div class="border-b flex flex-row justify-end">
+            {/* <div class="flex-grow">
                <TextField
                   icon="search"
                   placeholder="Search customers, invoices, ..."
@@ -144,9 +144,11 @@ export const CheckerLayout = ({ children, nav }) => (
                      </div>
                   </List>
                </Dropdown>
-            </div>
+            </div> */}
+
             <div
                class="border-l"
+               style={{ marginLeft: 'auto' }}
                onClick={(e, { store }) => {
                   store.toggle('nav.expand.user');
                }}

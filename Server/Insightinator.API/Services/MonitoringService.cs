@@ -2,7 +2,6 @@
 using Insightinator.API.Handlers.Error;
 using Insightinator.API.Handlers.Http.Request;
 using Insightinator.API.Handlers.Http.Response;
-using Insightinator.API.Metrics.Error;
 using MediatR;
 
 namespace Insightinator.API.Services;
@@ -16,6 +15,11 @@ public class MonitoringService : IMonitoringService
     public async Task ComputeAvgRequestProcessingTime(double time)
     {
         await _sender.Send(new AvgRequestProcessingTimeRequest(time));
+    }
+
+    public async Task ComputeErrorCount()
+    {
+        await _sender.Send(new ErrorCountRequest());
     }
 
     public async Task ComputeErrorTypes(object error)

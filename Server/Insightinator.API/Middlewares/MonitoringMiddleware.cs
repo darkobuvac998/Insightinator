@@ -34,8 +34,14 @@ public class MonitoringMiddleware : IMiddleware
         catch (Exception ex)
         {
             _logger.LogError("Exception {@Ex}", ex);
-            await monitoringService.ComputeErrroRate(UpTimeSeconds);
-            await monitoringService.ComputeErrorTypes(ex);
+            await Task.WhenAll(
+                monitoringService.ComputeErrorCount(),
+                monitoringService.ComputeErrroRate(UpTimeSeconds),
+                monitoringService.ComputeErrorTypes(ex)
+            );
+            //await monitoringService.ComputeErrorCount();
+            //await monitoringService.ComputeErrroRate(UpTimeSeconds);
+            //await monitoringService.ComputeErrorTypes(ex);
             throw;
         }
         finally
@@ -43,13 +49,25 @@ public class MonitoringMiddleware : IMiddleware
             _stopwatch.Stop();
 
             // HTTP request
-            await monitoringService.ComputeTotalRequestNumber();
-            await monitoringService.ComputeAvgRequestProcessingTime(_stopwatch.ElapsedMilliseconds);
-            await monitoringService.ComputeRequestsPerMinute(UpTimeSeconds);
+            //await monitoringService.ComputeTotalRequestNumber();
+            //await monitoringService.ComputeAvgRequestProcessingTime(_stopwatch.ElapsedMilliseconds);
+            //await monitoringService.ComputeRequestsPerMinute(UpTimeSeconds);
+
+            await Task.WhenAll(
+                monitoringService.ComputeTotalRequestNumber(),
+                monitoringService.ComputeAvgRequestProcessingTime(_stopwatch.ElapsedMilliseconds),
+                monitoringService.ComputeRequestsPerMinute(UpTimeSeconds)
+            );
 
             //HTTP response
-            await monitoringService.ComputeResponseCodeDistribution(
-                context.Response.StatusCode.ToString()
+            //await monitoringService.ComputeResponseCodeDistribution(
+            //    context.Response.StatusCode.ToString()
+            //);
+
+            await Task.WhenAll(
+                monitoringService.ComputeResponseCodeDistribution(
+                    context.Response.StatusCode.ToString()
+                )
             );
         }
 

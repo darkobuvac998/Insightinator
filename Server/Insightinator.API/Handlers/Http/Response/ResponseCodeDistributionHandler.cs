@@ -31,9 +31,13 @@ public class ResponseCodeDistributionHandler
 
         if (metric != null)
         {
-            if (metric.Value?.TryGetValue(request.ResponseCode, out int count) ?? false)
+            if (metric.Value.TryGetValue(request.ResponseCode, out int count))
             {
-                metric.Value?.TryUpdate(request.ResponseCode, count + 1, count);
+                metric.Value[request.ResponseCode] = count + 1;
+            }
+            else
+            {
+                metric.Value[request.ResponseCode] = 1;
             }
         }
         else

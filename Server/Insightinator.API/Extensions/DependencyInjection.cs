@@ -64,6 +64,8 @@ public static class DependencyInjection
                 )
         );
 
+        services.AddAutoMapper(AssemblyReference.Assembly);
+
         return services;
     }
 
